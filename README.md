@@ -2,6 +2,18 @@
 # RxCore
  Rasterex Web SDK Core
 
+ Pro version 35.5
+
+### 1 Added new method for controlling Annotation visibility on startup RxCore.markupDisplayOnload(onOff) onOff = boolean if true annotations are displayed when the file is loaded if false they are not displayed.
+
+ Pro version 35
+
+### 1 Added support for PDF annotation conversion to Rasterex markup.
+### 2 New method for drawing revision polygon.
+### 3 Fixed fill for measure rectangle.
+### 4 New method to upload modified local PDF.
+
+
 Pro version 33.993
 
 ### 1. Added new method RxCore.hideMarkupByMarkupNumbers(markupNumbers, onOff)
