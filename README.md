@@ -1,3 +1,23 @@
+Basic version 36.1
+### 1 Synchronized with Pro version. Some new features are not compatible.
+
+Pro version 35.79
+
+### 1. Added watermark functionality (addWatermarkToPage, addWatermarkToAllPages and removeWatermarkFromAllPages)
+
+### 2. Add annotation storage service.
+### 3. Store annotations to bakcend db.
+### 4. Added new image sub types returned by markup.getMarkupType(), RxCore.getMarkupTypes() and RxCore.getMarkupType(type, subtype)
+### 5. Fixed issues for machines using non 1:1 screen resolution
+   ### - Drop of image or stamp on pdf page page extent calculation issue.
+   ### - Scaling of annotation on pdf page page extent calculation issue.
+### 6. Fixed a problem with annotations being selected when swithcing user allowed annotation to be moved by non owning user.
+### 7. Selection of annotation with negative widht or height now works.
+### 8. RxCore.GUI_2DEntityInfoScreen and RxCore.GUI_2DEntityInfo callbacks now return whole block object instead of only the name.
+
+
+
+
 
 # RxCore
  Rasterex Web SDK Core
