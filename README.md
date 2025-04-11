@@ -1,3 +1,9 @@
+Pro version 35.85
+Basic versin 36.12
+
+### 1 Annotations should now be displayed on visible pages instead of earlier only on current page.
+
+
 Pro version 35.82.
 ### 1 Latest version.
 
