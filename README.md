@@ -1,3 +1,9 @@
+
+Pro version 35.86
+Basic versin 36.2
+
+### 1 Added support for continuous adding of text annotations using RxCore.markupAddMulti(true); This require use of new TextInputCtrl, new span based text input element in main.html template and AngularJS based UI.
+
 Pro version 35.85
 Basic versin 36.12
 
