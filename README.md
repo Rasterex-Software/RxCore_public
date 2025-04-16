@@ -1,4 +1,10 @@
 
+Pro version 35.87
+Basic versin 36.21
+
+### Fixed a minor issue with continuous adding of text that produced duplicates when clicking outside a created text without creating a new text annotation. Also fixed limitation when moving a free pen annotation.
+
+
 Pro version 35.86
 Basic versin 36.2
 
