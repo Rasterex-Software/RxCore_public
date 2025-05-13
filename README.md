@@ -1,4 +1,13 @@
 
+Pro version 35.9
+Basic versin 36.22
+
+### Basic version - Fixed a minor issue with continuous adding of notes where the size of the notes where resized when the adding of notes where terminated.
+
+### Pro version - Fixed a problem related to touch events that caused a freeze on mobile devices.
+### Pro version - Fixed a problem where the Foxit sub system called a function that caused a display problem for other open files of other formats.
+
+
 Pro version 35.87
 Basic versin 36.21
 
