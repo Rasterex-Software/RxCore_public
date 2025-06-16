@@ -1,10 +1,17 @@
 
+Pro version 35.925
+Basic versin 36.24
+
+### Added configuration option to disable markup rotation.
+
 
 Pro version 35.925
-Basic versin 36.22
+Basic versin 36.24
 
 ### Pro version - Fixed a problem related to opening large PDF from a URL
 ### Pro version - Disabled loading of PDF bookmarks automatically on file load to prevent problems with large number of Bookmarks.
+
+
 
 Pro version 35.9
 Basic versin 36.22
