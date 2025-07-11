@@ -1,12 +1,17 @@
+Pro version 35.925
+Basic version 36.3
+
+### Support for new PDFJS module and new internal TextLayerbuilder.
+
 
 Pro version 35.925
-Basic versin 36.24
+Basic version 36.24
 
 ### Added configuration option to disable markup rotation.
 
 
 Pro version 35.925
-Basic versin 36.24
+Basic version 36.24
 
 ### Pro version - Fixed a problem related to opening large PDF from a URL
 ### Pro version - Disabled loading of PDF bookmarks automatically on file load to prevent problems with large number of Bookmarks.
@@ -14,7 +19,7 @@ Basic versin 36.24
 
 
 Pro version 35.9
-Basic versin 36.22
+Basic version 36.22
 
 ### Basic version - Fixed a minor issue with continuous adding of notes where the size of the notes where resized when the adding of notes where terminated.
 
@@ -23,18 +28,18 @@ Basic versin 36.22
 
 
 Pro version 35.87
-Basic versin 36.21
+Basic version 36.21
 
 ### Fixed a minor issue with continuous adding of text that produced duplicates when clicking outside a created text without creating a new text annotation. Also fixed limitation when moving a free pen annotation.
 
 
 Pro version 35.86
-Basic versin 36.2
+Basic version 36.2
 
 ### 1 Added support for continuous adding of text annotations using RxCore.markupAddMulti(true); This require use of new TextInputCtrl, new span based text input element in main.html template and AngularJS based UI.
 
 Pro version 35.85
-Basic versin 36.12
+Basic version 36.12
 
 ### 1 Annotations should now be displayed on visible pages instead of earlier only on current page.
 
