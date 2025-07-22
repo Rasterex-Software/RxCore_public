@@ -1,3 +1,9 @@
+
+Pro version 35.93
+Basic version 36.3
+
+### Synchronized PDFJS and Foxit versions with new methods.
+
 Pro version 35.925
 Basic version 36.3
 
