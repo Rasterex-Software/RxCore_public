@@ -1,4 +1,11 @@
 
+
+Pro version 35.95
+Basic version 36.31
+
+### Fixed problem with new moveable signature object.
+### Fixed problem with area holes input output for XML and JSON.
+
 Pro version 35.93
 Basic version 36.3
 
