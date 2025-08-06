@@ -1,4 +1,8 @@
 
+Pro version 35.95
+Basic version 36.32
+
+### Opening file on startup from defaultconfig.xml should now work again.
 
 Pro version 35.95
 Basic version 36.31
