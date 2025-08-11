@@ -1,5 +1,10 @@
 
 Pro version 35.95
+Basic version 36.34
+
+### Added possibility to use Legacy PDFJS tested with version 2.16.105
+
+Pro version 35.95
 Basic version 36.32
 
 ### Opening file on startup from defaultconfig.xml should now work again.
