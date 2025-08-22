@@ -1,4 +1,6 @@
 
+### Added foxit iframe wrapper files
+
 Pro version 35.95
 Basic version 36.34
 
