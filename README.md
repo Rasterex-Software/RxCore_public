@@ -1,10 +1,16 @@
 
+# RxCore
+Rasterex Web SDK Core
 
-### Fixed problem with drawing measurement and annoations on rotated PDF page.
+Pro version 37.1
+Basic version 36.34
+
+### Added asynchronous page handling for printing PDF with Foxit.
 
 Pro version 35.99
 Basic version 36.34
 
+### Fixed problem with drawing measurement and annoations on rotated PDF page.
 ### Added foxit iframe wrapper files
 
 Pro version 35.95
