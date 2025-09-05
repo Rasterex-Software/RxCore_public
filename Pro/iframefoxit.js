@@ -777,7 +777,7 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     pgindex = page.info.index;
                     //RxCore.setBirdsEyeFoxit(bitmap, pgindex);
                     //RxCore.setPageBitmap(bitmap, pgindex);
-                    callback(bitmap);
+                    callback(bitmap, pgindex);
 
                     //foxview.pagestates[pagenum].thumbadded = true;
                 }).catch(function (error) {
@@ -1972,12 +1972,9 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         window.print();
     };
 
-    //foxview.onPageChange(foxview.pdfViewer, PDFViewCtrl.Events):
+    
     this.onPageChange = function (pdfViewer, ViewerEvents){
         if (pdfViewer) {
-
-            
-        
 
             pdfViewer.eventEmitter.on(ViewerEvents.pageNumberChange, function (newPageNumber) {
                 
@@ -2007,17 +2004,6 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                         }
     
                         window.scrollTo(0,ypos);
-    
-    
-                        //pagecorrect = newPageNumber - (foxview.curpage + 1);
-    
-                        //foxview.setCurPage(newPageNumber - 1);
-    
-                        //console.log(pagecorrect);  
-    
-                        /*if(foxview.curpage - pagecorrect > 0){
-                            foxview.pdfViewer.goToPage(foxview.curpage - pagecorrect);
-                        }*/
                         
                     }else{
                         foxview.setCurPage(newPageNumber - 1);
@@ -2038,10 +2024,6 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     
                 }
 
-                //console.log(newPageNumber);
-
-                //RxCore.foxitPageEvt(newPageNumber);
-                // newPageNumber = pageIndex + 1
            });
         }
     };
@@ -3322,10 +3304,30 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
 
     };
 
+
+    this.getpageBox = function(npagenum){
+
+
+        if (foxview.pdfViewer){
+
+            foxview.pdfViewer.getCurrentPDFDoc().getPageByIndex(npagenum).then(function (page) {
+
+                var pdfrect = page.getPageBox(0);
+                console.log(pdfrect);
+                //callback(pdfpoint);
+
+            });
+    
+        }
+
+        //getPageBox(0)
+        //getDeviceRect()
+    };
+
     this.getSnapPointRotate = function(npagenum, x, y, callback) {
 
         var point = {x: x, y: y};
-        console.log("Input device coordinates:", point);
+        //console.log("Input device coordinates:", point);
 
 
         var mode = [];
@@ -3338,13 +3340,12 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
             // convert client coordinates to PDF coordinates 
             foxview.pdfViewer.convertClientCoordToPDFCoord({clientX: x, clientY: y}).then(function(coordInfo) {
                 if (!coordInfo) {
-                    console.error("Coordinate conversion failed");
+                    //console.error("Coordinate conversion failed");
                     callback({found: false});
                     return;
 
                 }
-
-                console.log("Converted PDF coordinates:", coordInfo);
+                //console.log("Converted PDF coordinates:", coordInfo);
 
                 
                 var actualPageIndex = coordInfo.index;
@@ -3369,13 +3370,13 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     foxview.snapinprogress = true;
                     page.getSnappedPoint(pointrd, mode).then(function(fxsnapPoint) {
                         if (fxsnapPoint) {
-                            console.log("Found snap point in PDF coordinates:", fxsnapPoint);
+                            //console.log("Found snap point in PDF coordinates:", fxsnapPoint);
                             if (fxsnapPoint.x != pointrd.x || fxsnapPoint.y != pointrd.y) {
                                 // Convert PDF coordinates to device coordinates
                                 var pointarray = [fxsnapPoint.x, fxsnapPoint.y];
                                 var dvcpoint = page.getDevicePoint(pointarray, scale, rotation);
                                 var clientPoint = {x : dvcpoint[0], y : dvcpoint[1]};
-                                console.log("Final client coordinates:", clientPoint);
+                                //console.log("Final client coordinates:", clientPoint);
                                 callback({ found: true, x: clientPoint.x, y: clientPoint.y, type: 1, scale: scale, pageIndex: actualPageIndex});
 
                             } else {
@@ -3609,6 +3610,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
 
                 }*/
 
+
+
                 if (foxview.pagestates[pgindex].rendered && !foxview.redraw) {
                     
                     
@@ -3705,7 +3708,12 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     foxview.pagestates[pgindex].scrollTop = foxitpage.pagepos.top;
                 }
 
+                //add RxCore method to use with page event handling for print here.
+
                 RxCore.setfoxitPageSize(foxitpage);
+
+                RxCore.foxitPageRenderEvt(pgindex);
+
 
                 if (foxview.curpage == pgindex) {
                     foxview.setmarkupPosition(foxview.curpage);
@@ -3853,6 +3861,26 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         };
     };
 
+    this.addWatermarkRender = async function(text, settings = {}){
+        
+        const watermarkOptions = this.createWatermarkOptions(text, settings);
+        const doc = await foxview.pdfViewer.getCurrentPDFDoc();
+        const pageCount = await doc.getPageCount();
+        const render = foxview.pdfViewer.getPDFDocRender();
+        const arrallPages = [];
+
+        watermarkOptions.content = text;
+
+        for (let i = 0; i < pageCount; i++) {
+            arrallPages.push(i);
+		}
+
+        const wmConfigs = arrallPages.map(idx => (watermarkOptions));
+        
+        render.setWatermarkConfig(wmConfigs);
+
+    }
+
     this.addWatermarkToAllPages = function(text, settings = {}) {
         const watermarkOptions = this.createWatermarkOptions(text, settings);
         
@@ -3874,6 +3902,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                 console.log(cropBox);
 
             })
+
+            watermarkOptions.content = text;
 
             page.addWatermark(watermarkOptions);
                 
