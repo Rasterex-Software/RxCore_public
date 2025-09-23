@@ -746,7 +746,109 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
             });
         }
 
-    };    
+    };
+    
+    this.getBitmapPrint = function(pagenum, paperSize, callback){
+
+
+        const inchtomm = 25.4;
+
+        const paperwidth = (paperSize.width / inchtomm) * paperSize.DPI;
+        const paperheight = (paperSize.height / inchtomm) * paperSize.DPI;
+
+
+
+
+        //foxitpage.pdfwidth = page.info.width;
+        //foxitpage.pdfheight = page.info.height;
+
+        //foxitpage.width = page.getWidth();
+        //foxitpage.height = page.getHeight();
+
+
+        /*setPaperSize: function (width, height) {
+            this.paperwidth = width;
+            this.paperheight = height;
+            this.paperimage.width = (width / this.inchtomm) * this.DPI;
+            this.paperimage.height = (height / this.inchtomm) * this.DPI;
+        },
+        setDocSize: function (width, height) {
+            this.docwidth = width;
+            this.docheight = height;
+        },
+        setScale: function () {
+            var xscale = this.paperimage.width / this.docwidth; //thispage.MainImageWidth;
+            var yscale = this.paperimage.height / this.docheight; // thispage.MainImageHeight;
+            this.pscale = Math.min(xscale, yscale);
+            this.pdx = (this.paperimage.width - (this.docwidth * this.pscale)) / 2;
+            this.pdy = (this.paperimage.height - (this.docheight * this.pscale)) / 2;
+            this.scaleSet = true;
+        },*/
+
+
+        if (foxview.pdfViewer) {
+            foxview.pdfViewer.getCurrentPDFDoc().getPageByIndex(pagenum).then(function (page) {
+                var pgindex = page.info.index;
+
+                
+                //const DPI = 300;
+
+                const docheight = page.getHeight();
+                const docwidth = page.getWidth();
+
+                const xscale = paperwidth / docwidth; //thispage.MainImageWidth;
+                const yscale = paperheight / docheight; // thispage.MainImageHeight;
+                const scale = Math.min(xscale, yscale);
+        
+                const pdx = (paperwidth - (docwidth * scale)) / 2;
+                const pdy = (paperheight - (docheight * scale)) / 2;
+    
+                //var scale = birdseye.scale;
+                //var scale = 0.12;
+                var pagescale = scale * PixelToPoint;
+                var rotate = 0;
+
+
+                const pwwidth = Math.round(docwidth * scale);
+                const pheight = Math.round(docheight * scale);
+
+                var area = { x: 0, y: 0, width : pwwidth, height : pheight };
+
+                var contentsFlags = ["page", "annot"];
+                var usage = 'print';
+
+
+
+                page.render(pagescale, rotate, area, contentsFlags, usage).then(function (bitmap) {
+                    pgindex = page.info.index;
+                    //RxCore.setBirdsEyeFoxit(bitmap, pgindex);
+                    //RxCore.setPageBitmap(bitmap, pgindex);
+                    //callback(bitmap, pgindex);
+
+                    callback({
+                        bitmap: bitmap,
+                        pgindex: pgindex,
+                        docwidth : docwidth,
+                        docheight : docheight,
+                        pdx: pdx,
+                        pdy: pdy,
+                        pscale: scale
+                    });
+
+                    //foxview.pagestates[pagenum].thumbadded = true;
+                }).catch(function (error) {
+                    //console.log(error);
+                    callback({
+                        error,
+                        pgindex
+                    });
+                });
+            });
+        }
+
+
+    }
+
     this.getBitmap = function (pagenum, scale, callback) {
         if (foxview.pdfViewer) {
             foxview.pdfViewer.getCurrentPDFDoc().getPageByIndex(pagenum).then(function (page) {
