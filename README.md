@@ -2,6 +2,14 @@
 # RxCore
 Rasterex Web SDK Core
 
+Pro version 37.14
+Basic version 36.34
+
+### Undo - redo fix for text annotations.
+### New watermark render fumction for unicode texts.
+
+
+
 Pro version 37.12
 Basic version 36.34
 
