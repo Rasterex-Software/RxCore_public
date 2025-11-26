@@ -1,6 +1,21 @@
 
-# RxCore
-Rasterex Web SDK Core
+
+Rasterex Web SDK Core release notes
+
+
+Pro version 37.21
+
+### Added check for when fixed scale value is set for a page before calculating annotaion dimensions.
+### Added new magnifier object that can be used to create a panel in UI.
+### Added option to use magnifier with overlay alignment.
+### Added magnification support for PDF.
+### Fixed, server side compare alignment values were not always correct depending on screen scaling.
+### Fixed some issues with overlay compare alignment UI point stability.
+
+
+Basic version 36.34
+
+### No news.
 
 Pro version 37.14
 Basic version 36.34
