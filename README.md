@@ -2,6 +2,9 @@
 
 Rasterex Web SDK Core release notes
 
+Pro version 37.25
+### New method RxCore.openExtractedPageInViewer(fileName, pageNumber). This method can be used to create a new PDF  document in the viewer from a single page of a currently open PDF document. The new method takes two parameters, fileName and pageNumber. fileName is the name given to the new single page document, pageNumber is the 0 indexed page number from the original document that is to be used to create the new single page document. To use the new method the latest iframefoxit.js from this project is also needed.
+
 
 Pro version 37.21
 
