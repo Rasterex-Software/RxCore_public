@@ -2,6 +2,38 @@
 
 Rasterex Web SDK Core release notes
 
+
+Pro version 37.28
+
+### Fixed a problem with annotation fill style reading from RXML when using Hexadecimal colors.
+### Fixed a problem with Arc measurement position when using RXML save and load.
+### Added a new callback RxCore.GUI_Error that returns the error status and function name.
+
+
+```javascript
+RxCore.GUI_Error.connect(function (functionName, Error) {
+
+    console.log("An error ", Error, " occured in ", functionName);
+  
+});
+```
+
+Pro version 37.27
+
+### Fixed a problem with RxCore.setLineStyle where it affected the global line width.
+
+
+Pro version 37.26
+### New method RxCore.uploadOnlyPDF(), this uploads a PDF created in client to server. The method takes no parameters and uploads to the default upload folder.
+### New method RxCore.uploadPDFOnlyCustom(endpoint), this uploads a PDF created in client to server using a custom endpoint.
+### New callback RxCore.GUI_CacheCreated this returns 3 parameters OriginalURL, FileNameSRC and CacheURL. This callback is used in combination with new methods RxCore.uploadOnlyPDF and RxCore.uploadPDFOnlyCustom and will return the name of the file in the created cache folder and the url to the cache folder.
+
+```javascript
+    RXCore.onGuiCacheCreated((OriginalURL: string, FileNameSRC : string, CacheURL : string) => {
+      console.log("cache created", FileNameSRC, OriginalURL, CacheURL );
+    }); 
+```
+
 Pro version 37.25
 ### New method RxCore.openExtractedPageInViewer(fileName, pageNumber). This method can be used to create a new PDF  document in the viewer from a single page of a currently open PDF document. The new method takes two parameters, fileName and pageNumber. fileName is the name given to the new single page document, pageNumber is the 0 indexed page number from the original document that is to be used to create the new single page document. To use the new method the latest iframefoxit.js from this project is also needed.
 
