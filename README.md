@@ -3,6 +3,44 @@
 Rasterex Web SDK Core release notes
 
 
+Pro version 37.36
+
+### Added an alternative copy to clipboard handling using a callback RxCore.GUI_ClipBoardBlob. Call new method RxCore.useClipboardCallback(true) to use it.
+
+
+
+Pro version 37.33
+
+### Mew Thumbnail generation pipeline. Combining generation of multiple thumbnails for PDF documents that ensure the Foxit rendering is not compromized. 
+### New method for getting thumbnails in Foxit wrapper class.
+### UI for page thumbnails should now use IntersectionObserver to prevent flooding Foxit with thumbnail requests. 
+
+Example of how to introduce use of IntersectionObserver can be found in the Rasterex web viewer project in github the file is src\app\components\side-nav-menu\pages\page-thumbnail.directive.ts.
+
+Pro version 37.32
+
+### Fixed multiple problems with page manipulation page state sync issues.
+### Added new method in Foxit wrapper class switchViewmode that ensures that single page documents converted to multi-page by inserting pages sets the viewer in the correct view mode. Used by RxCore.
+
+### Fixes to page manipulation UI
+Currently the move-bottom method in the UI uses RXCore.movePageTo(pageRange, this.numpages - 1)
+This should be changed to RXCore.movePageTo(pageRange, this.numpages).
+The file src\app\components\side-nav-menu\pages\pages.component.ts should be changed.
+
+Also the current page sizes for adding blank pages will not give the correct page size.
+Use the following presets.
+
+         switch (this.selectedPresets) {
+            case '1': width = 595.28; height = 841.89; break; // A4
+            case '2': width = 841.89; height = 1190.55; break; // A3
+            case '3': width = 612; height = 792; break; // Letter
+            case '4': width = 396; height = 612; break; // Half Letter
+            case '5': width = 360; height = 576; break; // Junior Legal
+        }
+
+The file src\app\components\side-nav-menu\insert-modal\insert-modal.component.ts should be changed.
+
+
 Pro version 37.28
 
 ### Fixed a problem with annotation fill style reading from RXML when using Hexadecimal colors.
