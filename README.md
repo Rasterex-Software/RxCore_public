@@ -1,6 +1,13 @@
-
-
 Rasterex Web SDK Core release notes
+
+Pro version 37.39
+
+### Optimized rendering of dotsArray for hatches. Should now run quite a bit faster for this primitive type.
+### Added new method RxCore.disableHatchRender(true/false). If set to true hatch fill will not be rendered for CAD files. This allow fast render for CAD files that has heavy use of hatch fills.
+
+Pro version 37.38
+
+### Added a filter to reading rxml files with disconnected hole tags to prevent the markup loading from breaking.
 
 
 Pro version 37.36
