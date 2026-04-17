@@ -1,5 +1,18 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.4
+
+### Restructured the close cycle when using RxCore.closeDocumentEx. The closing will now wait until the document load is complete.
+
+Example of use.
+
+```typescript
+
+await RxCore.closeDocumentEx();
+RxCore.openFile(fileobject);
+
+```
+
 Pro version 37.39
 
 ### Optimized rendering of dotsArray for hatches. Should now run quite a bit faster for this primitive type.
