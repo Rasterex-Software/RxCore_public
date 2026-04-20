@@ -1,5 +1,9 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.41
+
+### Further restructured the close cycle when using RxCore.closeDocumentEx. We now check if a document is closed or closing when using legacy image based document rendering.[
+
 Pro version 37.4
 
 ### Restructured the close cycle when using RxCore.closeDocumentEx. The closing will now wait until the document load is complete.
