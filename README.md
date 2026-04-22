@@ -1,8 +1,13 @@
 Rasterex Web SDK Core release notes
 
+
+Pro version 37.43
+
+### Further restructured the close cycle when using RxCore.closeDocumentEx. Added extra guards to prevent operation on orphaned page objects during closing.
+
 Pro version 37.41
 
-### Further restructured the close cycle when using RxCore.closeDocumentEx. We now check if a document is closed or closing when using legacy image based document rendering.[
+### Further restructured the close cycle when using RxCore.closeDocumentEx. We now check if a document is closed or closing when using legacy image based document rendering.
 
 Pro version 37.4
 
