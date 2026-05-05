@@ -1,5 +1,9 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.43
+
+### Updated iframefoxit.js to allow zoom in, out and zoom window on multi page PDF files previous version had a current page check that prevented this.
+
 
 Pro version 37.43
 
