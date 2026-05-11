@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.44
+
+### Added handling of PDF files that has non-continuous page scrolling. When this is detected, annotations not on current page is not rendered. Require new iframefoxit.js to work.
+
+
 Pro version 37.43
 
 ### Updated iframefoxit.js to allow zoom in, out and zoom window on multi page PDF files previous version had a current page check that prevented this.

@@ -104,6 +104,7 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
     this.rxresize = false;
     this.snapinprogress = false;
     this.nMaxScale = 10;
+    this.bNonContinuousScroll = false;
 
     this.curpagerender = null;
 
@@ -279,6 +280,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         foxview.firstpagewidth = 300;
         foxview.firstpageheight = 300;
         foxview.nMaxScale = 10;
+        foxview.bNonContinuousScroll = false;
+
         foxview.pagestates = [];
         foxview.docrect = window.document.body.getBoundingClientRect();
         foxview.rxcorescrollpagenum = 0;
@@ -356,6 +359,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         foxview.scrollHeightfactor = 1;
         foxview.gotopageused = false;
         foxview.rxresize = false;
+        foxview.nMaxScale = 10;
+        foxview.bNonContinuousScroll = false;
     };
 
     this.onScroll = function () {};
@@ -2235,6 +2240,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
             pdfViewer.eventEmitter.on(ViewerEvents.pageNumberChange, function (newPageNumber) {
                 
                 var bcurpagenotvisible = false;
+                
+                RxCore.foxitPageEvt(newPageNumber);
 
                 var pagepos = foxview.getPagePos(foxview.curpage);
                 var scrpos = foxview.getScrollPos(window.document.body);
@@ -2265,17 +2272,17 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                         foxview.setCurPage(newPageNumber - 1);
                     }
                     foxview.gotopageused = false;
-                    RxCore.foxitPageEvt(newPageNumber);
+                    //RxCore.foxitPageEvt(newPageNumber);
                     
 
                 }else{
                     
                     if(newPageNumber === 1 && foxview.curpage > 1) {
                         foxview.setCurPage(foxview.curpage);
-                        RxCore.foxitPageEvt(foxview.curpage + 1);
+                        //RxCore.foxitPageEvt(foxview.curpage + 1);
                       } else {
                         foxview.setCurPage(newPageNumber - 1);
-                        RxCore.foxitPageEvt(newPageNumber);
+                        //RxCore.foxitPageEvt(newPageNumber);
                       }
                     
                 }
@@ -2793,7 +2800,74 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         foxview.updateScrollPosition(0, h);
     };
 
-    this.scrolldeltaupdate = function (mouse, pagenum) {
+    this.scrolldeltaupdate = function(mouse, pagenum) {
+        if (!foxview.fileOpen) return;
+    
+        foxview.setCurPage(pagenum);
+    
+        // get current scroll positions
+        var scrollposy = window.scrollY || window.pageYOffset || 0;
+        var scrollposx = window.scrollX || window.pageXOffset || 0;
+
+
+        // adjust for mouse grip
+        if (foxview.onVBarGrip && foxview.vBarOn) {
+            scrollposy -= mouse.my * foxview.scrollHeightfactor;
+        } else if (foxview.onHBarGrip && foxview.hBarOn) {
+            scrollposx -= mouse.mx * foxview.scrollWidthfactor;
+        } else {
+            scrollposy += mouse.my;
+            scrollposx += mouse.mx;
+        }
+    
+        // clamp to document bounds
+        var ScrollWidth = document.body.scrollWidth;
+        var ScrollHeight = document.body.scrollHeight;
+    
+        scrollposx = Math.max(0, Math.min(scrollposx, ScrollWidth));
+        scrollposy = Math.max(0, Math.min(scrollposy, ScrollHeight));
+    
+        // calibration at edges
+        if (scrollposx === 0) RxCore.foxitcalibratepagePosX(pagenum, false);
+        if (scrollposx === ScrollWidth) RxCore.foxitcalibratepagePosX(pagenum, true);
+    
+        if (foxview.numpages > 1) {
+            if (pagenum === 0 && scrollposy === 0) RxCore.foxitcalibratepagePosY(pagenum);
+            if (pagenum === foxview.numpages - 1 && scrollposy === ScrollHeight)
+                RxCore.foxitcalibratepagePosY(pagenum);
+        }
+    
+        // store scroll position in page state
+        if (!foxview.pagestates[pagenum]) foxview.pagestates[pagenum] = {};
+        var lastScrollY = foxview.pagestates[pagenum].lastScrollY || 0;
+        var deltaY = scrollposy - lastScrollY;
+    
+        foxview.pagestates[pagenum].rxscrollposy = scrollposy;
+    
+        // Only update annotations if the page actually moved
+        if (deltaY !== 0) {
+            foxview.setmarkupPosition(pagenum);
+        }
+    
+        foxview.pagestates[pagenum].lastScrollY = scrollposy;
+    
+        // update viewport scroll
+        window.scrollTo(scrollposx, scrollposy);
+
+        if (!foxview.bNonContinuousScroll && foxview.curpagerender) {
+            var pdfrect = foxview.curpagerender.getHandlerDOM().getBoundingClientRect();
+        
+            // Heuristic: if page top is at 0 in iframe, scrolling is non-continuous
+            if (pdfrect.top === 0) {
+                foxview.bNonContinuousScroll = true;
+                console.log("non continuous");
+            }
+        }
+
+
+    };
+
+    this.scrolldeltaupdateold = function (mouse, pagenum) {
 
 
         if(!foxview.fileOpen){
