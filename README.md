@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.45
+
+### Added handling of text annotations outside page when doing export and markup save. Require new iframefoxit.js to work.
+
+
 Pro version 37.44
 
 ### Added handling of PDF files that has non-continuous page scrolling. When this is detected, annotations not on current page is not rendered. Require new iframefoxit.js to work.

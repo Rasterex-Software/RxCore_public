@@ -1473,6 +1473,23 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
 
     };
 
+    this.getPageSizeAsync = function(pagenum) {
+        return new Promise((resolve, reject) => {
+            const pdfDoc = foxview.pdfViewer.getCurrentPDFDoc();
+            if (!pdfDoc) return reject(new Error("No PDF loaded"));
+    
+            pdfDoc.getPageByIndex(pagenum)
+                .then(page => {
+                    resolve({
+                        width: page.getWidth(),
+                        height: page.getHeight(),
+                        rotation: page.getRotationAngle()
+                    });
+                })
+                .catch(err => reject(err));
+        });
+    };
+
     this.selectText = function(npagenum, tselectobj, callback){
 
 
