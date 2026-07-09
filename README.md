@@ -1,5 +1,9 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.49
+
+### Switching between files will now reset the text selection and text search. So that text layers for CAD is not affected by scale and pan changes.
+
 Pro version 37.45
 
 ### Added handling of text annotations outside page when doing export and markup save. Require new iframefoxit.js to work.
