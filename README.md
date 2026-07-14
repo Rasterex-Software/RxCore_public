@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.5
+
+### Problems with switching from encodeURI to encodeURIComponent for all URLs caused problems with getting files from server. The internal URL properties now use the decoded string.
+
+
 Pro version 37.49
 
 ### Switching between files will now reset the text selection and text search. So that text layers for CAD is not affected by scale and pan changes.
