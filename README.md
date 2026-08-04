@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.51
+
+### Added new properties in JSON structure for measureArc type. DimRadius and DimLength. entityJSONNode.Entity.DimRadius = markupobj.dimradius; entityJSONNode.Entity.DimLength = markupobj.dimlength;
+
+
 Pro version 37.5
 
 ### Problems with switching from encodeURI to encodeURIComponent for all URLs caused problems with getting files from server. The internal URL properties now use the decoded string.
