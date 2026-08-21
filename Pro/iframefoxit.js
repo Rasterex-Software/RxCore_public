@@ -528,6 +528,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         request.open('GET', url, true);
         request.responseType = 'blob';
         request.onload = function () {
+
+            RxCore.onPDFloadprogress(100);
             const file = new File([request.response], filename, {
                 type: 'application/pdf',
                 lastModified: Date.now()
@@ -535,6 +537,17 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
     
             foxview.openPDF(file, false);
         };
+        request.onprogress = function (event) {
+            if (event.lengthComputable) {
+              const progress = Math.round((event.loaded / event.total) * 95);
+              RxCore.onPDFloadprogress(progress);
+          
+              /*window.parent.postMessage({
+                type: 'PDF_LOAD_PROGRESS',
+                progress
+              }, '*');*/
+            }
+          };
         request.send();
     };
 
@@ -1614,6 +1627,7 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
             !foxview.pdfViewer
         ) return;
  
+        //console.log("zoomtopointdirect");
         //|| pagenum !== foxview.curpage; //page check removed to allow zoom when between pages.
         
         foxview.scale = factor;
@@ -1700,6 +1714,7 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
             pagenum !== foxview.curpage
         ) return;
 
+
         foxview.scale = factor;
 
         foxview.pagestates[pagenum].rendered = false;
@@ -1712,7 +1727,10 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
             y: mousepoint.my
         };
 
+        //console.log("zoomtopoint", position, factor);
+
         foxview.pdfViewer.zoomAtPosition(factor, position);
+        
     };    
 
     this.zoomdirect = function (pagenum, factor, scrolldata) {
@@ -1734,22 +1752,28 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                 foxview.scale = factor;
                 //console.log(foxview.scale);
 
-                foxview.pagestates[pagenum].rendered = false;
+                if(foxview.fileOpen){
+                    foxview.pagestates[pagenum].rendered = false;
+                }
+                
 
                 foxview.rendering = true;
                 await foxview.pdfViewer.zoomTo(foxview.scale);
 
-                if (scrolldata) {
-                    if (scrolldata.pagerect.w >= scrolldata.cw) {
-                        foxview.pagestates[pagenum].doscroll = true;
-                        foxview.pagestates[pagenum].scrollArr.push(scrolldata);
+                if(foxview.fileOpen){
+                    if (scrolldata) {
+                        if (scrolldata.pagerect.w >= scrolldata.cw) {
+    
+                            foxview.pagestates[pagenum].doscroll = true;
+                            foxview.pagestates[pagenum].scrollArr.push(scrolldata);
+                        } else {
+                            foxview.pagestates[pagenum].doscroll = false;
+                            foxview.pagestates[pagenum].scrollArr = [];
+                        }
                     } else {
                         foxview.pagestates[pagenum].doscroll = false;
                         foxview.pagestates[pagenum].scrollArr = [];
                     }
-                } else {
-                    foxview.pagestates[pagenum].doscroll = false;
-                    foxview.pagestates[pagenum].scrollArr = [];
                 }
 
             }
@@ -2424,6 +2448,7 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         
 
                 foxview.fileOpen = true;
+                
             });
         }
     };
@@ -4063,6 +4088,7 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
         if (pdfViewer) {
             pdfViewer.eventEmitter.on(ViewerEvents.renderPageSuccess, function (pageRender) {
 
+
                 foxview.curpagerender = pageRender;
                 
                 //console.log('redraw event success');
@@ -4109,7 +4135,14 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                 var PDFpagewidth = pageRender.page.info.width;
                 var PDFpageheight = pageRender.page.info.height;
 
-                foxview.pagestates[pgindex].rotation = pageRender.page.getRotationAngle();
+                var pagerot = pageRender.page.getRotationAngle();
+
+                if(foxview.fileOpen){
+                    foxview.pagestates[pgindex].rotation = pagerot;
+                }
+
+
+                
 
                 //foxview.setmarkupPositionScale(pgindex);
                 /*if((foxview.zoomfit) || (!foxview.vBarOn && !foxview.hBarOn) || (foxview.vBarOn && foxview.hBarOn)) {
@@ -4128,17 +4161,21 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
 
                 //var pagepos = foxview.getPagePos(pgindex);
 
-
-                if (!foxview.pagestates[foxview.curpage].doscroll && foxview.pagestates[pgindex].pagescale == pgscale) {
-                    foxview.checkpagecurrent(pgindex);
+                if(foxview.fileOpen){
+                    if (!foxview.pagestates[foxview.curpage].doscroll && foxview.pagestates[pgindex].pagescale == pgscale) {
+                        foxview.checkpagecurrent(pgindex);
+                    }
                 }
+
 
 
                 //foxview.gotopageused = false;    
 
-                if (pgindex >= foxview.numpages) {
-                    foxview.rendering = false;
-                    return;
+                if(foxview.fileOpen){
+                    if (pgindex >= foxview.numpages) {
+                        foxview.rendering = false;
+                        return;
+                    }
                 }
 
                 /*if(foxitpageEx.pagepos != undefined){
@@ -4150,17 +4187,18 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
 
                 }*/
 
-
-
-                if (foxview.pagestates[pgindex].rendered && !foxview.redraw) {
-                    
-                    
-                    foxview.rendering = false;
-                    return;
+                if(foxview.fileOpen){
+                    if (foxview.pagestates[pgindex].rendered && !foxview.redraw) {
+                        foxview.rendering = false;
+                        return;
+                    }
+    
                 }
 
-                if(foxview.pagestates[pgindex].originalrotation == undefined){
-                    foxview.pagestates[pgindex].originalrotation == foxview.pagestates[pgindex].rotation;
+                if(foxview.fileOpen){
+                    if(foxview.pagestates[pgindex].originalrotation == undefined){
+                        foxview.pagestates[pgindex].originalrotation == foxview.pagestates[pgindex].rotation;
+                    }
                 }
 
 
@@ -4184,8 +4222,8 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     height: pageheight,
                     pdfwidth : PDFpagewidth,
                     pdfheight : PDFpageheight,
-                    rotation : foxview.pagestates[pgindex].rotation,
-                    originalrotation : foxview.pagestates[pgindex].originalrotation,
+                    rotation : pagerot,
+                    originalrotation : pagerot,
                     divwidth: 0,
                     divheight: 0,
                     rows: 1,
@@ -4194,15 +4232,19 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     scaleupdate: false,
                     scrollupdate: false
                     //pxwidth : pageRender.page._pixelwidth;
-                };
+                };                
 
-                if (foxview.pagestates[pgindex].pagescale == pgscale && foxview.pagestates[pgindex].scrollupdate) {
-                    foxitpage.scrollupdate = true;
-                    foxitpage.scaleupdate = false;
-                } else {
-                    foxitpage.scrollupdate = false;
-                    foxitpage.scaleupdate = true;
+                if(foxview.fileOpen){
+                    if (foxview.pagestates[pgindex].pagescale == pgscale && foxview.pagestates[pgindex].scrollupdate) {
+                        foxitpage.scrollupdate = true;
+                        foxitpage.scaleupdate = false;
+                    } else {
+                        foxitpage.scrollupdate = false;
+                        foxitpage.scaleupdate = true;
+                    }
                 }
+
+
 
                 //console.log('page index render', pgindex);
 
@@ -4218,13 +4260,21 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                 foxitpage.nonvisible = [];
                 foxitpage.scrollArray = [];
 
-                foxitpage.scrolldata.x = foxview.pagestates[pgindex].scrollposx;
-                foxitpage.scrolldata.y = foxview.pagestates[pgindex].scrollposy;
+                if(foxview.fileOpen){
+                    foxitpage.scrolldata.x = foxview.pagestates[pgindex].scrollposx;
+                    foxitpage.scrolldata.y = foxview.pagestates[pgindex].scrollposy;
+    
+                }
+
 
                 foxitpage.scrolldata.width = window.document.body.scrollWidth;
                 foxitpage.scrolldata.height = window.document.body.scrollHeight;
 
-                foxitpage.scrollComplete = foxview.pagestates[pgindex].scrollComplete;
+                if(foxview.fileOpen){
+                    foxitpage.scrollComplete = foxview.pagestates[pgindex].scrollComplete;
+                }
+                    
+                                        
 
                 foxitpage.width = pagewidth;
                 foxitpage.height = pageheight;
@@ -4247,7 +4297,9 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                 foxitpage.pagepos = pdfrect;
                 //foxitpage = foxview.getAnnotCanvases(foxitpage);
                 if(foxitpage.pagepos){
-                    foxview.pagestates[pgindex].scrollTop = foxitpage.pagepos.top;
+                    if(foxview.fileOpen){
+                        foxview.pagestates[pgindex].scrollTop = foxitpage.pagepos.top;
+                    }                    
                 }
 
                 //add RxCore method to use with page event handling for print here.
@@ -4316,13 +4368,15 @@ var foxitViewer = function foxitViewer(zsdivid, divnum, libpath) {
                     } */
                 }
 
-                foxview.pagestates[pgindex].pageindex = pgindex;
-                foxview.pagestates[pgindex].rendered = true;
-                foxview.pagestates[pgindex].pagescale = pgscale;
-                foxview.pagestates[pgindex].width = pagewidth;
-                foxview.pagestates[pgindex].height = pageheight;
-                foxview.pagestates[pgindex].foxitscale = foxview.scale;
-                foxview.pagestates[pgindex].scrollComplete = false;
+                if(foxview.fileOpen){
+                    foxview.pagestates[pgindex].pageindex = pgindex;
+                    foxview.pagestates[pgindex].rendered = true;
+                    foxview.pagestates[pgindex].pagescale = pgscale;
+                    foxview.pagestates[pgindex].width = pagewidth;
+                    foxview.pagestates[pgindex].height = pageheight;
+                    foxview.pagestates[pgindex].foxitscale = foxview.scale;
+                    foxview.pagestates[pgindex].scrollComplete = false;
+                }
 
                 foxitpage = {};
 
