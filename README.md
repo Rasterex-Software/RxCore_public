@@ -1,5 +1,9 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.52
+### Minor modification of the export function to comply with PDF upload.
+
+
 Pro version 37.51
 ### Added new properties in JSON structure for measureArc type. DimRadius and DimLength. entityJSONNode.Entity.DimRadius = markupobj.dimradius; entityJSONNode.Entity.DimLength = markupobj.dimlength; 
 ### Updated iframefoxit.js to be compatible with Foxit 11.
