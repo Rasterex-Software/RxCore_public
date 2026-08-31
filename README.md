@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.53
+
+### Added new method RxCore.useAspectLock(true/false) This will determine if stamps are created with aspect lock on or not.
+
+
 Pro version 37.52
 ### Minor modification of the export function to comply with PDF upload.
 
