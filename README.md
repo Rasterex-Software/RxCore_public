@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.57
+
+### Asynchronous Image load for markup was preventing export to PDF immediately on GUI_MarkupLoadComplete. GUI_MarkupLoadComplete will now take image load completion into account.
+### Made sure GUI_MarkupLoadComplete does not fail to trigger under some rare cases. 
+
 
 Pro version 37.56
 
