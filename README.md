@@ -1,5 +1,27 @@
 Rasterex Web SDK Core release notes
 
+
+Pro version 37.56
+
+### Made changes to startup sequence so configuration is forced to load before license checkout.
+
+
+Pro version 37.55
+
+### Made some corrections to ensure roll over between feet and inches is consistent. 
+### Added new method RxCore.setFractionPrecision.
+### Added new method setFractionPrecisionForPage.  
+### Added new method setElementFractionPrecision.  
+### These methods are used to set the fraction precision using values like 32, 16, 8, 4 and 2. setFractionPrecisionForPage should now be used instead of setDimPrecisionForPage when using imperial measurment system.
+
+
+Pro version 37.54
+
+### Added new method RxCore.setCompareOpacity(value); This method can be used with a client overlay compare to fade the content of the background or overlay file respectively.
+
+### Added new method RxCore.setCompareCommonLevel(level); This method can be used with a client overlay compare to control the grayscale level of common content.
+
+
 Pro version 37.53
 
 ### Added new method RxCore.useAspectLock(true/false) This will determine if stamps are created with aspect lock on or not.
