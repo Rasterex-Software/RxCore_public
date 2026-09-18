@@ -1,5 +1,32 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.62
+
+### Corrected stability issues introduced by recent user-requested changes to the startup and markup loading sequences.
+
+
+Pro version 37.61
+
+### Doing a pan operation on CAD drawings will now supress the rendering of hatches while the pan operation is performed and restore the full view when complete.
+
+
+Pro version 37.6
+
+### Added new polygon close option. Now selecting the first point again will close the polygon.
+
+
+Pro version 37.59
+
+### getUnitlengthRemainder did not apply the measure object scale settings. This is now corrected. So that existing dimension lines using fractional notation will use its own internal precision setting. To change an existing measurmeent objects precision use RxCore.setElementFractionPrecision(val)
+
+
+Pro version 37.58
+
+### Added method RxCore.setElementDimPrecisionAll takes parameter number 1-4 and overrides the number of decimals shown for all measurements objects that uses decimal notation including square feet.
+
+### Added method RxCore.setElementFractionPrecisionAll takes parameter number 4-32 and overrides the fraction precision for all measurements objects that uses fractional notation.
+
+
 Pro version 37.57
 
 ### Asynchronous Image load for markup was preventing export to PDF immediately on GUI_MarkupLoadComplete. GUI_MarkupLoadComplete will now take image load completion into account.
