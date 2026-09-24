@@ -1,5 +1,9 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.63
+
+### Added DWF hyperlink support. This was earlier only partially implemented.
+
 Pro version 37.62
 
 ### Corrected stability issues introduced by recent user-requested changes to the startup and markup loading sequences.
