@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.71
+
+### Refactor Three.js GLTF selection for nested scene hierarchies and shared materials. 
+### This version or newer is required for Revit support.
+
 Pro version 37.63
 
 ### Added DWF hyperlink support. This was earlier only partially implemented.
