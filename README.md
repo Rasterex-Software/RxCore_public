@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.72
+
+### Added new method RxCore.setBaseURL(szBaseURL) that allow the system to dynamically change the back-end endpoints statically set in rxconfig.js
+
+
 Pro version 37.71
 
 ### Refactor Three.js GLTF selection for nested scene hierarchies and shared materials. 
