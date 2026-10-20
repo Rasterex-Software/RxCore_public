@@ -1,5 +1,9 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.73
+
+### Text comments with backslash caused export to PDF to not include annotations. Backslashes are now handled on xml input output.
+
 Pro version 37.72
 
 ### Added new method RxCore.setBaseURL(szBaseURL) that allow the system to dynamically change the back-end endpoints statically set in rxconfig.js
