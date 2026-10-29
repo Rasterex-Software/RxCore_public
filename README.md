@@ -1,5 +1,17 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.74
+
+### Export methods have been modified to accept file name override. This will require a new version of RxCSISAPI.dll on the server.
+
+```typescript
+// new parameter supported to specify output file name.
+RxCore.exportFile(consolidate, format, UPI, paperSize, markupFlag, outputFileName)
+
+```
+
+### Existing 3D methods have been updated to function with the new GLTF structure for Revit.
+
 Pro version 37.73
 
 ### Text comments with backslash caused export to PDF to not include annotations. Backslashes are now handled on xml input output.
