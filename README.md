@@ -1,5 +1,10 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.76
+
+### Added methods for alternative annotation rendering and handling.
+### Fixed a problem with 3D transparency reset.
+
 Pro version 37.74
 
 ### Export methods have been modified to accept file name override. This will require a new version of RxCSISAPI.dll on the server.
