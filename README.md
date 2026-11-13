@@ -1,5 +1,21 @@
 Rasterex Web SDK Core release notes
 
+Pro version 37.77
+
+### Added special handling of rxml files derived from conversion of legacy xcm binary files.
+### RxCore.openFile now support an extra property xcmfiles used to convcert legacy xcm binary files.
+### Use of the new parameter require the rasterex back end rxcsisapi.dll to be updated to latest version.
+
+```typescript
+RxCore.openFile({
+    filepath:"C:\\\\Rasterex\\\\upload\\\\ARKITEKT.DWG", 
+    mime : null, 
+    cacheid :"ARKITEKT", 
+    displayname : "ARKITEKT.DWG",
+    xcmfiles : ["C:\\\\Rasterex\\\\upload\\\\ARKITEKT.XCM"]
+    });
+```
+
 Pro version 37.76
 
 ### Added methods for alternative annotation rendering and handling.
